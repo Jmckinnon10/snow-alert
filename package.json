@@ -1,0 +1,22 @@
+{
+  "name": "snow-alert",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jmckinnon10/snow-alert.git"
+  },
+  "author": "JMAC",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jmckinnon10/snow-alert/issues"
+  },
+  "homepage": "https://github.com/Jmckinnon10/snow-alert#readme",
+  "dependencies": {
+    "google-spreadsheet": "^3.3.0"
+  }
+}
