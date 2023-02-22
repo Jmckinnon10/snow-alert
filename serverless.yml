@@ -1,0 +1,18 @@
+service: snow-alert
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+
+functions:
+  dataBaseHandler:
+    handler: registerForAlerts.handler
+    events:
+      - httpApi:
+          path: /
+          method: get
+  cronHandler:
+    handler: makeAlerts.handler
+    events:
+      - schedule: cron(1 hour)
