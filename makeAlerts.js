@@ -68,7 +68,7 @@ const getWeather = async (recipients) => {
     };
 
     result.push(updatedPerson);
-    console.log(result);
+    // console.log(result);
   }
   return result;
 };

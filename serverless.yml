@@ -1,5 +1,4 @@
 service: snow-alert
-frameworkVersion: "3"
 
 provider:
   name: aws
@@ -11,8 +10,8 @@ functions:
     events:
       - httpApi:
           path: /
-          method: get
+          method: post
   cronHandler:
     handler: makeAlerts.handler
     events:
-      - schedule: cron(1 hour)
+      - schedule: cron(30 12 * * 1-6)
