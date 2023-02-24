@@ -179,7 +179,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/snow-alert/dev/1677180379823-2023-02-23T19:26:19.823Z/snow-alert.zip"
+                "S3Key": "serverless/snow-alert/dev/1677195265627-2023-02-23T23:34:25.627Z/snow-alert.zip"
               },
               "Handler": "registerForAlerts.handler",
               "Runtime": "nodejs18.x",
@@ -204,7 +204,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/snow-alert/dev/1677180379823-2023-02-23T19:26:19.823Z/snow-alert.zip"
+                "S3Key": "serverless/snow-alert/dev/1677195265627-2023-02-23T23:34:25.627Z/snow-alert.zip"
               },
               "Handler": "makeAlerts.handler",
               "Runtime": "nodejs18.x",
@@ -222,30 +222,30 @@
               "CronHandlerLogGroup"
             ]
           },
-          "DataBaseHandlerLambdaVersionAU9Z9GWSmT3MuUNbHLTSvJgYGP2HYapBCCN69iVsOA8": {
+          "DataBaseHandlerLambdaVersionfy5NFsT4nS8gdoRaxWU16jk1IRRYvSKHNMfD21JQ": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "DataBaseHandlerLambdaFunction"
               },
-              "CodeSha256": "LsWcmvxACQtumONEWrrB7R3+/kXsjXrcnhrgnZ6DYt4="
+              "CodeSha256": "p1EIP7zOLx4A1tb0Iuo+narlk4KXmDF8pJ0LDTg8S1g="
             }
           },
-          "CronHandlerLambdaVersionV6xcIC11MvOAeRvHYGKqMviiWK3prtVb9Cc3oYptm8": {
+          "CronHandlerLambdaVersionLCFRZVznn3WiSBQXkpvjHMapnxcp05P3ipzkI8k": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CronHandlerLambdaFunction"
               },
-              "CodeSha256": "LsWcmvxACQtumONEWrrB7R3+/kXsjXrcnhrgnZ6DYt4="
+              "CodeSha256": "p1EIP7zOLx4A1tb0Iuo+narlk4KXmDF8pJ0LDTg8S1g="
             }
           },
           "CronHandlerEventsRuleSchedule1": {
             "Type": "AWS::Events::Rule",
             "Properties": {
-              "ScheduleExpression": "cron(30 12 * * 1-6)",
+              "ScheduleExpression": "rate(1 hour)",
               "State": "ENABLED",
               "Targets": [
                 {
@@ -274,6 +274,43 @@
               "SourceArn": {
                 "Fn::GetAtt": [
                   "CronHandlerEventsRuleSchedule1",
+                  "Arn"
+                ]
+              }
+            }
+          },
+          "CronHandlerEventsRuleSchedule2": {
+            "Type": "AWS::Events::Rule",
+            "Properties": {
+              "ScheduleExpression": "cron(40 16 * * ? *)",
+              "State": "ENABLED",
+              "Targets": [
+                {
+                  "Arn": {
+                    "Fn::GetAtt": [
+                      "CronHandlerLambdaFunction",
+                      "Arn"
+                    ]
+                  },
+                  "Id": "cronHandlerSchedule"
+                }
+              ]
+            }
+          },
+          "CronHandlerLambdaPermissionEventsRuleSchedule2": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "CronHandlerLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "events.amazonaws.com",
+              "SourceArn": {
+                "Fn::GetAtt": [
+                  "CronHandlerEventsRuleSchedule2",
                   "Arn"
                 ]
               }
@@ -384,7 +421,7 @@
           "DataBaseHandlerLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "DataBaseHandlerLambdaVersionAU9Z9GWSmT3MuUNbHLTSvJgYGP2HYapBCCN69iVsOA8"
+              "Ref": "DataBaseHandlerLambdaVersionfy5NFsT4nS8gdoRaxWU16jk1IRRYvSKHNMfD21JQ"
             },
             "Export": {
               "Name": "sls-snow-alert-dev-DataBaseHandlerLambdaFunctionQualifiedArn"
@@ -393,7 +430,7 @@
           "CronHandlerLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CronHandlerLambdaVersionV6xcIC11MvOAeRvHYGKqMviiWK3prtVb9Cc3oYptm8"
+              "Ref": "CronHandlerLambdaVersionLCFRZVznn3WiSBQXkpvjHMapnxcp05P3ipzkI8k"
             },
             "Export": {
               "Name": "sls-snow-alert-dev-CronHandlerLambdaFunctionQualifiedArn"
@@ -539,13 +576,16 @@
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "DataBaseHandlerLambdaVersionAU9Z9GWSmT3MuUNbHLTSvJgYGP2HYapBCCN69iVsOA8"
+        "versionLogicalId": "DataBaseHandlerLambdaVersionfy5NFsT4nS8gdoRaxWU16jk1IRRYvSKHNMfD21JQ"
       },
       "cronHandler": {
         "handler": "makeAlerts.handler",
         "events": [
           {
-            "schedule": "cron(30 12 * * 1-6)"
+            "schedule": "rate(1 hour)"
+          },
+          {
+            "schedule": "cron(40 16 * * ? *)"
           }
         ],
         "name": "snow-alert-dev-cronHandler",
@@ -554,7 +594,7 @@
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "CronHandlerLambdaVersionV6xcIC11MvOAeRvHYGKqMviiWK3prtVb9Cc3oYptm8"
+        "versionLogicalId": "CronHandlerLambdaVersionLCFRZVznn3WiSBQXkpvjHMapnxcp05P3ipzkI8k"
       }
     },
     "configValidationMode": "warn",
@@ -573,7 +613,7 @@
     "artifact": "/Users/johnmckinnon/snow-alert/.serverless/snow-alert.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/snow-alert/dev/1677180379823-2023-02-23T19:26:19.823Z",
+    "artifactDirectoryName": "serverless/snow-alert/dev/1677195265627-2023-02-23T23:34:25.627Z",
     "artifact": "snow-alert.zip"
   }
 }

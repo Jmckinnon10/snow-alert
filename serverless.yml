@@ -14,4 +14,5 @@ functions:
   cronHandler:
     handler: makeAlerts.handler
     events:
-      - schedule: cron(30 12 * * 1-6)
+      - schedule: rate(1 hour)
+      - schedule: cron(40 16 * * ? *)

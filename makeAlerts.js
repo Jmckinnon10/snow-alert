@@ -75,9 +75,13 @@ const getWeather = async (recipients) => {
 
 const sendWeatherReport = (recipients) => {
   console.log(recipients);
-  const currentMSTtimeInHours = new Date().getHours().toLocaleString("en-US", {
+  const date = new Date();
+  date.setUTCHours(23, 40, 0);
+  const timeString = date.toLocaleTimeString("en-US", {
     timeZone: "America/Denver",
+    hour12: false,
   });
+  const time = "";
   recipients.forEach((person) => {
     if (person.snowChance !== 0) {
       const snowMessage = `Get your gear ready! There is a ${person.snowChance}% chance of snow today that could accumulate to ${person.snowAmount} cm in ${person.cityName}.`;
@@ -89,7 +93,7 @@ const sendWeatherReport = (recipients) => {
         })
         .then((message) => console.log(message.sid));
     }
-    if (person.snowChance == 0 && currentMSTtimeInHours == 12) {
+    if (person.snowChance == 0 && time == timeString) {
       const weatherMessage = `There is a ${person.snowChance}% chance of snow today in ${person.cityName}. The high temperature is ${person.tempHigh} degrees Fahrenheit and the weather condition is ${person.weatherCondition}.`;
       client.messages
         .create({
@@ -105,14 +109,5 @@ const sendWeatherReport = (recipients) => {
 module.exports.handler = async () => {
   const recipientsData = await getAllRecipientsFromDB();
   const weatherData = await getWeather(recipientsData);
-  // console.log("L79", weatherData);
-  // await weatherReport(weatherData);
-  // await snowReport(weatherData);
   await sendWeatherReport(weatherData);
-  // await getWeather(recipientsData);
-  // await createMessage(weatherData);
-  // console.log(message);
-  // console.log(weatherData);
 };
-
-module.exports.handler();
