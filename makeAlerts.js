@@ -10,14 +10,12 @@ const client = require("twilio")(
 // reference the database and fetch all numbers in the database
 // fetch weather api using zip code from database
 // send SMS text from Twilio if snow % > 0
-
 const getAllRecipientsFromDB = async () => {
   /* 
   START
   reference the database and fetch all numbers in the database
   */
   const doc = new GoogleSpreadsheet(customCreds.googleSheetID);
-
   await doc.useServiceAccountAuth({
     client_email: creds.client_email,
     private_key: creds.private_key,
@@ -93,7 +91,7 @@ const sendWeatherReport = (recipients) => {
         })
         .then((message) => console.log(message.sid));
     }
-    if (person.snowChance == 0 && time == timeString) {
+    if (person.snowChance == 0) {
       const weatherMessage = `There is a ${person.snowChance}% chance of snow today in ${person.cityName}. The high temperature is ${person.tempHigh} degrees Fahrenheit and the weather condition is ${person.weatherCondition}.`;
       client.messages
         .create({

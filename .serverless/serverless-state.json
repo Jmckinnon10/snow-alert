@@ -83,16 +83,16 @@
               }
             }
           },
-          "DataBaseHandlerLogGroup": {
+          "RegisterForAlertsLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/snow-alert-dev-dataBaseHandler"
+              "LogGroupName": "/aws/lambda/snow-alert-dev-registerForAlerts"
             }
           },
-          "CronHandlerLogGroup": {
+          "MakeAlertsLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/snow-alert-dev-cronHandler"
+              "LogGroupName": "/aws/lambda/snow-alert-dev-makeAlerts"
             }
           },
           "IamRoleLambdaExecution": {
@@ -172,18 +172,18 @@
               }
             }
           },
-          "DataBaseHandlerLambdaFunction": {
+          "RegisterForAlertsLambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
               "Code": {
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/snow-alert/dev/1677195265627-2023-02-23T23:34:25.627Z/snow-alert.zip"
+                "S3Key": "serverless/snow-alert/dev/1677279825626-2023-02-24T23:03:45.626Z/snow-alert.zip"
               },
               "Handler": "registerForAlerts.handler",
               "Runtime": "nodejs18.x",
-              "FunctionName": "snow-alert-dev-dataBaseHandler",
+              "FunctionName": "snow-alert-dev-registerForAlerts",
               "MemorySize": 1024,
               "Timeout": 6,
               "Role": {
@@ -194,21 +194,21 @@
               }
             },
             "DependsOn": [
-              "DataBaseHandlerLogGroup"
+              "RegisterForAlertsLogGroup"
             ]
           },
-          "CronHandlerLambdaFunction": {
+          "MakeAlertsLambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
               "Code": {
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/snow-alert/dev/1677195265627-2023-02-23T23:34:25.627Z/snow-alert.zip"
+                "S3Key": "serverless/snow-alert/dev/1677279825626-2023-02-24T23:03:45.626Z/snow-alert.zip"
               },
               "Handler": "makeAlerts.handler",
               "Runtime": "nodejs18.x",
-              "FunctionName": "snow-alert-dev-cronHandler",
+              "FunctionName": "snow-alert-dev-makeAlerts",
               "MemorySize": 1024,
               "Timeout": 6,
               "Role": {
@@ -219,30 +219,30 @@
               }
             },
             "DependsOn": [
-              "CronHandlerLogGroup"
+              "MakeAlertsLogGroup"
             ]
           },
-          "DataBaseHandlerLambdaVersionfy5NFsT4nS8gdoRaxWU16jk1IRRYvSKHNMfD21JQ": {
+          "RegisterForAlertsLambdaVersionC8mcJ6adEPvUOtRqQ7QFsGXMyDFd7uyyZ37ZEEsEEc": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
-                "Ref": "DataBaseHandlerLambdaFunction"
+                "Ref": "RegisterForAlertsLambdaFunction"
               },
-              "CodeSha256": "p1EIP7zOLx4A1tb0Iuo+narlk4KXmDF8pJ0LDTg8S1g="
+              "CodeSha256": "P2JQjFyI4zdzUqZyPaKjq/7J8FVxUrzrO63VzhcaQ/0="
             }
           },
-          "CronHandlerLambdaVersionLCFRZVznn3WiSBQXkpvjHMapnxcp05P3ipzkI8k": {
+          "MakeAlertsLambdaVersionC2iUk4Pjls0jlfvHIzGWQrELXG3Gc4VTzyhyaNpixk": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
-                "Ref": "CronHandlerLambdaFunction"
+                "Ref": "MakeAlertsLambdaFunction"
               },
-              "CodeSha256": "p1EIP7zOLx4A1tb0Iuo+narlk4KXmDF8pJ0LDTg8S1g="
+              "CodeSha256": "P2JQjFyI4zdzUqZyPaKjq/7J8FVxUrzrO63VzhcaQ/0="
             }
           },
-          "CronHandlerEventsRuleSchedule1": {
+          "MakeAlertsEventsRuleSchedule1": {
             "Type": "AWS::Events::Rule",
             "Properties": {
               "ScheduleExpression": "rate(1 hour)",
@@ -251,21 +251,21 @@
                 {
                   "Arn": {
                     "Fn::GetAtt": [
-                      "CronHandlerLambdaFunction",
+                      "MakeAlertsLambdaFunction",
                       "Arn"
                     ]
                   },
-                  "Id": "cronHandlerSchedule"
+                  "Id": "makeAlertsSchedule"
                 }
               ]
             }
           },
-          "CronHandlerLambdaPermissionEventsRuleSchedule1": {
+          "MakeAlertsLambdaPermissionEventsRuleSchedule1": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
               "FunctionName": {
                 "Fn::GetAtt": [
-                  "CronHandlerLambdaFunction",
+                  "MakeAlertsLambdaFunction",
                   "Arn"
                 ]
               },
@@ -273,44 +273,7 @@
               "Principal": "events.amazonaws.com",
               "SourceArn": {
                 "Fn::GetAtt": [
-                  "CronHandlerEventsRuleSchedule1",
-                  "Arn"
-                ]
-              }
-            }
-          },
-          "CronHandlerEventsRuleSchedule2": {
-            "Type": "AWS::Events::Rule",
-            "Properties": {
-              "ScheduleExpression": "cron(40 16 * * ? *)",
-              "State": "ENABLED",
-              "Targets": [
-                {
-                  "Arn": {
-                    "Fn::GetAtt": [
-                      "CronHandlerLambdaFunction",
-                      "Arn"
-                    ]
-                  },
-                  "Id": "cronHandlerSchedule"
-                }
-              ]
-            }
-          },
-          "CronHandlerLambdaPermissionEventsRuleSchedule2": {
-            "Type": "AWS::Lambda::Permission",
-            "Properties": {
-              "FunctionName": {
-                "Fn::GetAtt": [
-                  "CronHandlerLambdaFunction",
-                  "Arn"
-                ]
-              },
-              "Action": "lambda:InvokeFunction",
-              "Principal": "events.amazonaws.com",
-              "SourceArn": {
-                "Fn::GetAtt": [
-                  "CronHandlerEventsRuleSchedule2",
+                  "MakeAlertsEventsRuleSchedule1",
                   "Arn"
                 ]
               }
@@ -336,12 +299,12 @@
               }
             }
           },
-          "DataBaseHandlerLambdaPermissionHttpApi": {
+          "RegisterForAlertsLambdaPermissionHttpApi": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
               "FunctionName": {
                 "Fn::GetAtt": [
-                  "DataBaseHandlerLambdaFunction",
+                  "RegisterForAlertsLambdaFunction",
                   "Arn"
                 ]
               },
@@ -373,7 +336,7 @@
               }
             }
           },
-          "HttpApiIntegrationDataBaseHandler": {
+          "HttpApiIntegrationRegisterForAlerts": {
             "Type": "AWS::ApiGatewayV2::Integration",
             "Properties": {
               "ApiId": {
@@ -381,7 +344,7 @@
               },
               "IntegrationType": "AWS_PROXY",
               "IntegrationUri": {
-                "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"DataBaseHandlerLambdaPermissionHttpApi\"][\"Properties\"][\"FunctionName\"]"
+                "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"RegisterForAlertsLambdaPermissionHttpApi\"][\"Properties\"][\"FunctionName\"]"
               },
               "PayloadFormatVersion": "2.0",
               "TimeoutInMillis": 30000
@@ -400,13 +363,13 @@
                   [
                     "integrations",
                     {
-                      "Ref": "HttpApiIntegrationDataBaseHandler"
+                      "Ref": "HttpApiIntegrationRegisterForAlerts"
                     }
                   ]
                 ]
               }
             },
-            "DependsOn": "HttpApiIntegrationDataBaseHandler"
+            "DependsOn": "HttpApiIntegrationRegisterForAlerts"
           }
         },
         "Outputs": {
@@ -418,22 +381,22 @@
               "Name": "sls-snow-alert-dev-ServerlessDeploymentBucketName"
             }
           },
-          "DataBaseHandlerLambdaFunctionQualifiedArn": {
+          "RegisterForAlertsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "DataBaseHandlerLambdaVersionfy5NFsT4nS8gdoRaxWU16jk1IRRYvSKHNMfD21JQ"
+              "Ref": "RegisterForAlertsLambdaVersionC8mcJ6adEPvUOtRqQ7QFsGXMyDFd7uyyZ37ZEEsEEc"
             },
             "Export": {
-              "Name": "sls-snow-alert-dev-DataBaseHandlerLambdaFunctionQualifiedArn"
+              "Name": "sls-snow-alert-dev-RegisterForAlertsLambdaFunctionQualifiedArn"
             }
           },
-          "CronHandlerLambdaFunctionQualifiedArn": {
+          "MakeAlertsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CronHandlerLambdaVersionLCFRZVznn3WiSBQXkpvjHMapnxcp05P3ipzkI8k"
+              "Ref": "MakeAlertsLambdaVersionC2iUk4Pjls0jlfvHIzGWQrELXG3Gc4VTzyhyaNpixk"
             },
             "Export": {
-              "Name": "sls-snow-alert-dev-CronHandlerLambdaFunctionQualifiedArn"
+              "Name": "sls-snow-alert-dev-MakeAlertsLambdaFunctionQualifiedArn"
             }
           },
           "HttpApiId": {
@@ -558,7 +521,7 @@
     },
     "pluginsData": {},
     "functions": {
-      "dataBaseHandler": {
+      "registerForAlerts": {
         "handler": "registerForAlerts.handler",
         "events": [
           {
@@ -570,31 +533,28 @@
             "resolvedPath": "/"
           }
         ],
-        "name": "snow-alert-dev-dataBaseHandler",
+        "name": "snow-alert-dev-registerForAlerts",
         "package": {},
         "memory": 1024,
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "DataBaseHandlerLambdaVersionfy5NFsT4nS8gdoRaxWU16jk1IRRYvSKHNMfD21JQ"
+        "versionLogicalId": "RegisterForAlertsLambdaVersionC8mcJ6adEPvUOtRqQ7QFsGXMyDFd7uyyZ37ZEEsEEc"
       },
-      "cronHandler": {
+      "makeAlerts": {
         "handler": "makeAlerts.handler",
         "events": [
           {
             "schedule": "rate(1 hour)"
-          },
-          {
-            "schedule": "cron(40 16 * * ? *)"
           }
         ],
-        "name": "snow-alert-dev-cronHandler",
+        "name": "snow-alert-dev-makeAlerts",
         "package": {},
         "memory": 1024,
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "CronHandlerLambdaVersionLCFRZVznn3WiSBQXkpvjHMapnxcp05P3ipzkI8k"
+        "versionLogicalId": "MakeAlertsLambdaVersionC2iUk4Pjls0jlfvHIzGWQrELXG3Gc4VTzyhyaNpixk"
       }
     },
     "configValidationMode": "warn",
@@ -613,7 +573,7 @@
     "artifact": "/Users/johnmckinnon/snow-alert/.serverless/snow-alert.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/snow-alert/dev/1677195265627-2023-02-23T23:34:25.627Z",
+    "artifactDirectoryName": "serverless/snow-alert/dev/1677279825626-2023-02-24T23:03:45.626Z",
     "artifact": "snow-alert.zip"
   }
 }
