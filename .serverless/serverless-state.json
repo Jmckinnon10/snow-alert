@@ -179,7 +179,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/snow-alert/dev/1677279825626-2023-02-24T23:03:45.626Z/snow-alert.zip"
+                "S3Key": "serverless/snow-alert/dev/1678126194696-2023-03-06T18:09:54.696Z/snow-alert.zip"
               },
               "Handler": "registerForAlerts.handler",
               "Runtime": "nodejs18.x",
@@ -204,7 +204,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/snow-alert/dev/1677279825626-2023-02-24T23:03:45.626Z/snow-alert.zip"
+                "S3Key": "serverless/snow-alert/dev/1678126194696-2023-03-06T18:09:54.696Z/snow-alert.zip"
               },
               "Handler": "makeAlerts.handler",
               "Runtime": "nodejs18.x",
@@ -222,30 +222,30 @@
               "MakeAlertsLogGroup"
             ]
           },
-          "RegisterForAlertsLambdaVersionC8mcJ6adEPvUOtRqQ7QFsGXMyDFd7uyyZ37ZEEsEEc": {
+          "RegisterForAlertsLambdaVersion0sVpzuXvyjivtXxQLIhXjiubckoT1Vk9U7OtHj1RXo": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "RegisterForAlertsLambdaFunction"
               },
-              "CodeSha256": "P2JQjFyI4zdzUqZyPaKjq/7J8FVxUrzrO63VzhcaQ/0="
+              "CodeSha256": "40QsNUvfuDCKCJBa9VgwpGJugbxi5siAWRxLXHc1J9w="
             }
           },
-          "MakeAlertsLambdaVersionC2iUk4Pjls0jlfvHIzGWQrELXG3Gc4VTzyhyaNpixk": {
+          "MakeAlertsLambdaVersionYft3sA2xzppRLFzFaargSp70YDohPB9C1b03vepFo": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "MakeAlertsLambdaFunction"
               },
-              "CodeSha256": "P2JQjFyI4zdzUqZyPaKjq/7J8FVxUrzrO63VzhcaQ/0="
+              "CodeSha256": "40QsNUvfuDCKCJBa9VgwpGJugbxi5siAWRxLXHc1J9w="
             }
           },
           "MakeAlertsEventsRuleSchedule1": {
             "Type": "AWS::Events::Rule",
             "Properties": {
-              "ScheduleExpression": "rate(1 hour)",
+              "ScheduleExpression": "rate(24 hours)",
               "State": "ENABLED",
               "Targets": [
                 {
@@ -384,7 +384,7 @@
           "RegisterForAlertsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "RegisterForAlertsLambdaVersionC8mcJ6adEPvUOtRqQ7QFsGXMyDFd7uyyZ37ZEEsEEc"
+              "Ref": "RegisterForAlertsLambdaVersion0sVpzuXvyjivtXxQLIhXjiubckoT1Vk9U7OtHj1RXo"
             },
             "Export": {
               "Name": "sls-snow-alert-dev-RegisterForAlertsLambdaFunctionQualifiedArn"
@@ -393,7 +393,7 @@
           "MakeAlertsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "MakeAlertsLambdaVersionC2iUk4Pjls0jlfvHIzGWQrELXG3Gc4VTzyhyaNpixk"
+              "Ref": "MakeAlertsLambdaVersionYft3sA2xzppRLFzFaargSp70YDohPB9C1b03vepFo"
             },
             "Export": {
               "Name": "sls-snow-alert-dev-MakeAlertsLambdaFunctionQualifiedArn"
@@ -539,13 +539,13 @@
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "RegisterForAlertsLambdaVersionC8mcJ6adEPvUOtRqQ7QFsGXMyDFd7uyyZ37ZEEsEEc"
+        "versionLogicalId": "RegisterForAlertsLambdaVersion0sVpzuXvyjivtXxQLIhXjiubckoT1Vk9U7OtHj1RXo"
       },
       "makeAlerts": {
         "handler": "makeAlerts.handler",
         "events": [
           {
-            "schedule": "rate(1 hour)"
+            "schedule": "rate(24 hours)"
           }
         ],
         "name": "snow-alert-dev-makeAlerts",
@@ -554,7 +554,7 @@
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "MakeAlertsLambdaVersionC2iUk4Pjls0jlfvHIzGWQrELXG3Gc4VTzyhyaNpixk"
+        "versionLogicalId": "MakeAlertsLambdaVersionYft3sA2xzppRLFzFaargSp70YDohPB9C1b03vepFo"
       }
     },
     "configValidationMode": "warn",
@@ -573,7 +573,7 @@
     "artifact": "/Users/johnmckinnon/snow-alert/.serverless/snow-alert.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/snow-alert/dev/1677279825626-2023-02-24T23:03:45.626Z",
+    "artifactDirectoryName": "serverless/snow-alert/dev/1678126194696-2023-03-06T18:09:54.696Z",
     "artifact": "snow-alert.zip"
   }
 }

@@ -18,8 +18,7 @@
 ```
 Weather API - https://www.weatherapi.com/my/
 
-Client_ID:
-805996574777-i47e0sg7t3518ednqf0ego43ervg2nvg.apps.googleusercontent.com
+
 ```
 
 // this describes the lambda code

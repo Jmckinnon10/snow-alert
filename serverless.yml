@@ -14,4 +14,4 @@ functions:
   makeAlerts:
     handler: makeAlerts.handler
     events:
-      - schedule: rate(1 hour)
+      - schedule: rate(24 hours)
