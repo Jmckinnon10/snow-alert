@@ -20,6 +20,7 @@ const getAllRecipientsFromDB = async () => {
     client_email: creds.client_email,
     private_key: creds.private_key,
   });
+  2;
 
   await doc.loadInfo();
   const firstSheet = doc.sheetsByIndex[0];
