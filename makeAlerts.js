@@ -1,4 +1,7 @@
-const { GoogleSpreadsheet } = require("google-spreadsheet");
+const AWS = require("aws-sdk");
+const dynamoSnowAlert = new AWS.DynamoDB.DocumentClient({
+  region: "us-east-1",
+});
 const axios = require("axios");
 const creds = require("./creds.json");
 const customCreds = require("./customCreds.json");
@@ -15,26 +18,23 @@ const getAllRecipientsFromDB = async () => {
   START
   reference the database and fetch all numbers in the database
   */
-  const doc = new GoogleSpreadsheet(customCreds.googleSheetID);
-  await doc.useServiceAccountAuth({
-    client_email: creds.client_email,
-    private_key: creds.private_key,
-  });
-  2;
+  const params = {
+    TableName: "SnowAlertDB",
+  };
 
-  await doc.loadInfo();
-  const firstSheet = doc.sheetsByIndex[0];
-  const rows = await firstSheet.getRows();
-  // console.log(rows);
-  const recipients = [];
-  for (const row of rows) {
-    recipients.push({
-      name: row.name,
-      number: row.number,
-      zipcode: row.zipcode,
-    });
+  try {
+    const result = await dynamoSnowAlert.scan(params).promise();
+    const recipients = result.Items.map((item) => ({
+      userId: item.userId,
+      name: item.name,
+      number: item.number,
+      zipcode: item.zipcode,
+    }));
+    return recipients;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
-  return recipients;
   /* 
   STOP
   reference the database and fetch all numbers in the database

@@ -6,7 +6,35 @@
     },
     "provider": {
       "name": "aws",
-      "runtime": "nodejs18.x",
+      "runtime": "nodejs14.x",
+      "iam": {
+        "role": {
+          "statements": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Query",
+                "dynamodb:Scan",
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem"
+              ],
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "UsersTable",
+                    "Arn"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "environment": {
+        "USERS_TABLE": "SnowAlertDB"
+      },
       "stage": "dev",
       "region": "us-east-1",
       "versionFunctions": true,
@@ -151,6 +179,9 @@
                             "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/snow-alert-dev*:*:*"
                           }
                         ]
+                      },
+                      {
+                        "$ref": "$[\"service\"][\"provider\"][\"iam\"][\"role\"][\"statements\"][0]"
                       }
                     ]
                   }
@@ -179,13 +210,18 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/snow-alert/dev/1678126194696-2023-03-06T18:09:54.696Z/snow-alert.zip"
+                "S3Key": "serverless/snow-alert/dev/1678742439799-2023-03-13T21:20:39.799Z/snow-alert.zip"
               },
               "Handler": "registerForAlerts.handler",
-              "Runtime": "nodejs18.x",
+              "Runtime": "nodejs14.x",
               "FunctionName": "snow-alert-dev-registerForAlerts",
               "MemorySize": 1024,
               "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "USERS_TABLE": "SnowAlertDB"
+                }
+              },
               "Role": {
                 "Fn::GetAtt": [
                   "IamRoleLambdaExecution",
@@ -204,13 +240,18 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/snow-alert/dev/1678126194696-2023-03-06T18:09:54.696Z/snow-alert.zip"
+                "S3Key": "serverless/snow-alert/dev/1678742439799-2023-03-13T21:20:39.799Z/snow-alert.zip"
               },
               "Handler": "makeAlerts.handler",
-              "Runtime": "nodejs18.x",
+              "Runtime": "nodejs14.x",
               "FunctionName": "snow-alert-dev-makeAlerts",
               "MemorySize": 1024,
               "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "USERS_TABLE": "SnowAlertDB"
+                }
+              },
               "Role": {
                 "Fn::GetAtt": [
                   "IamRoleLambdaExecution",
@@ -222,24 +263,24 @@
               "MakeAlertsLogGroup"
             ]
           },
-          "RegisterForAlertsLambdaVersion0sVpzuXvyjivtXxQLIhXjiubckoT1Vk9U7OtHj1RXo": {
+          "RegisterForAlertsLambdaVersionymRmT631FgZ8pn3SeIDjdjBLtrROZsQJxfeveXQn0": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "RegisterForAlertsLambdaFunction"
               },
-              "CodeSha256": "40QsNUvfuDCKCJBa9VgwpGJugbxi5siAWRxLXHc1J9w="
+              "CodeSha256": "8kQ//bQk4y7YwWUtreeqJ17+npaN+eOLO0lo9wut2uA="
             }
           },
-          "MakeAlertsLambdaVersionYft3sA2xzppRLFzFaargSp70YDohPB9C1b03vepFo": {
+          "MakeAlertsLambdaVersionH2dogoDN40FQw17P8HqmmjbkUCcz8kWXfyvNV2ushU": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "MakeAlertsLambdaFunction"
               },
-              "CodeSha256": "40QsNUvfuDCKCJBa9VgwpGJugbxi5siAWRxLXHc1J9w="
+              "CodeSha256": "8kQ//bQk4y7YwWUtreeqJ17+npaN+eOLO0lo9wut2uA="
             }
           },
           "MakeAlertsEventsRuleSchedule1": {
@@ -370,6 +411,25 @@
               }
             },
             "DependsOn": "HttpApiIntegrationRegisterForAlerts"
+          },
+          "UsersTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+              "AttributeDefinitions": [
+                {
+                  "AttributeName": "userId",
+                  "AttributeType": "S"
+                }
+              ],
+              "KeySchema": [
+                {
+                  "AttributeName": "userId",
+                  "KeyType": "HASH"
+                }
+              ],
+              "BillingMode": "PAY_PER_REQUEST",
+              "TableName": "SnowAlertDB"
+            }
           }
         },
         "Outputs": {
@@ -384,7 +444,7 @@
           "RegisterForAlertsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "RegisterForAlertsLambdaVersion0sVpzuXvyjivtXxQLIhXjiubckoT1Vk9U7OtHj1RXo"
+              "Ref": "RegisterForAlertsLambdaVersionymRmT631FgZ8pn3SeIDjdjBLtrROZsQJxfeveXQn0"
             },
             "Export": {
               "Name": "sls-snow-alert-dev-RegisterForAlertsLambdaFunctionQualifiedArn"
@@ -393,7 +453,7 @@
           "MakeAlertsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "MakeAlertsLambdaVersionYft3sA2xzppRLFzFaargSp70YDohPB9C1b03vepFo"
+              "Ref": "MakeAlertsLambdaVersionH2dogoDN40FQw17P8HqmmjbkUCcz8kWXfyvNV2ushU"
             },
             "Export": {
               "Name": "sls-snow-alert-dev-MakeAlertsLambdaFunctionQualifiedArn"
@@ -537,9 +597,9 @@
         "package": {},
         "memory": 1024,
         "timeout": 6,
-        "runtime": "nodejs18.x",
+        "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "RegisterForAlertsLambdaVersion0sVpzuXvyjivtXxQLIhXjiubckoT1Vk9U7OtHj1RXo"
+        "versionLogicalId": "RegisterForAlertsLambdaVersionymRmT631FgZ8pn3SeIDjdjBLtrROZsQJxfeveXQn0"
       },
       "makeAlerts": {
         "handler": "makeAlerts.handler",
@@ -552,10 +612,34 @@
         "package": {},
         "memory": 1024,
         "timeout": 6,
-        "runtime": "nodejs18.x",
+        "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "MakeAlertsLambdaVersionYft3sA2xzppRLFzFaargSp70YDohPB9C1b03vepFo"
+        "versionLogicalId": "MakeAlertsLambdaVersionH2dogoDN40FQw17P8HqmmjbkUCcz8kWXfyvNV2ushU"
       }
+    },
+    "resources": {
+      "Resources": {
+        "UsersTable": {
+          "Type": "AWS::DynamoDB::Table",
+          "Properties": {
+            "AttributeDefinitions": [
+              {
+                "AttributeName": "userId",
+                "AttributeType": "S"
+              }
+            ],
+            "KeySchema": [
+              {
+                "AttributeName": "userId",
+                "KeyType": "HASH"
+              }
+            ],
+            "BillingMode": "PAY_PER_REQUEST",
+            "TableName": "SnowAlertDB"
+          }
+        }
+      },
+      "Outputs": {}
     },
     "configValidationMode": "warn",
     "serviceFilename": "serverless.yml",
@@ -566,6 +650,9 @@
       },
       "functions": {
         "$ref": "$[\"service\"][\"functions\"]"
+      },
+      "resources": {
+        "$ref": "$[\"service\"][\"resources\"]"
       }
     },
     "layers": {},
@@ -573,7 +660,7 @@
     "artifact": "/Users/johnmckinnon/snow-alert/.serverless/snow-alert.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/snow-alert/dev/1678126194696-2023-03-06T18:09:54.696Z",
+    "artifactDirectoryName": "serverless/snow-alert/dev/1678742439799-2023-03-13T21:20:39.799Z",
     "artifact": "snow-alert.zip"
   }
 }
