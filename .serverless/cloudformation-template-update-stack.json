@@ -139,6 +139,25 @@
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/snow-alert-dev*:*:*"
                     }
                   ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:Query",
+                    "dynamodb:Scan",
+                    "dynamodb:GetItem",
+                    "dynamodb:PutItem",
+                    "dynamodb:UpdateItem",
+                    "dynamodb:DeleteItem"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::GetAtt": [
+                        "UsersTable",
+                        "Arn"
+                      ]
+                    }
+                  ]
                 }
               ]
             }
@@ -167,13 +186,18 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/snow-alert/dev/1678126194696-2023-03-06T18:09:54.696Z/snow-alert.zip"
+          "S3Key": "serverless/snow-alert/dev/1678742439799-2023-03-13T21:20:39.799Z/snow-alert.zip"
         },
         "Handler": "registerForAlerts.handler",
-        "Runtime": "nodejs18.x",
+        "Runtime": "nodejs14.x",
         "FunctionName": "snow-alert-dev-registerForAlerts",
         "MemorySize": 1024,
         "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "USERS_TABLE": "SnowAlertDB"
+          }
+        },
         "Role": {
           "Fn::GetAtt": [
             "IamRoleLambdaExecution",
@@ -192,13 +216,18 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/snow-alert/dev/1678126194696-2023-03-06T18:09:54.696Z/snow-alert.zip"
+          "S3Key": "serverless/snow-alert/dev/1678742439799-2023-03-13T21:20:39.799Z/snow-alert.zip"
         },
         "Handler": "makeAlerts.handler",
-        "Runtime": "nodejs18.x",
+        "Runtime": "nodejs14.x",
         "FunctionName": "snow-alert-dev-makeAlerts",
         "MemorySize": 1024,
         "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "USERS_TABLE": "SnowAlertDB"
+          }
+        },
         "Role": {
           "Fn::GetAtt": [
             "IamRoleLambdaExecution",
@@ -210,24 +239,24 @@
         "MakeAlertsLogGroup"
       ]
     },
-    "RegisterForAlertsLambdaVersion0sVpzuXvyjivtXxQLIhXjiubckoT1Vk9U7OtHj1RXo": {
+    "RegisterForAlertsLambdaVersionymRmT631FgZ8pn3SeIDjdjBLtrROZsQJxfeveXQn0": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "RegisterForAlertsLambdaFunction"
         },
-        "CodeSha256": "40QsNUvfuDCKCJBa9VgwpGJugbxi5siAWRxLXHc1J9w="
+        "CodeSha256": "8kQ//bQk4y7YwWUtreeqJ17+npaN+eOLO0lo9wut2uA="
       }
     },
-    "MakeAlertsLambdaVersionYft3sA2xzppRLFzFaargSp70YDohPB9C1b03vepFo": {
+    "MakeAlertsLambdaVersionH2dogoDN40FQw17P8HqmmjbkUCcz8kWXfyvNV2ushU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "MakeAlertsLambdaFunction"
         },
-        "CodeSha256": "40QsNUvfuDCKCJBa9VgwpGJugbxi5siAWRxLXHc1J9w="
+        "CodeSha256": "8kQ//bQk4y7YwWUtreeqJ17+npaN+eOLO0lo9wut2uA="
       }
     },
     "MakeAlertsEventsRuleSchedule1": {
@@ -361,6 +390,25 @@
         }
       },
       "DependsOn": "HttpApiIntegrationRegisterForAlerts"
+    },
+    "UsersTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "userId",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "userId",
+            "KeyType": "HASH"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "TableName": "SnowAlertDB"
+      }
     }
   },
   "Outputs": {
@@ -375,7 +423,7 @@
     "RegisterForAlertsLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "RegisterForAlertsLambdaVersion0sVpzuXvyjivtXxQLIhXjiubckoT1Vk9U7OtHj1RXo"
+        "Ref": "RegisterForAlertsLambdaVersionymRmT631FgZ8pn3SeIDjdjBLtrROZsQJxfeveXQn0"
       },
       "Export": {
         "Name": "sls-snow-alert-dev-RegisterForAlertsLambdaFunctionQualifiedArn"
@@ -384,7 +432,7 @@
     "MakeAlertsLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "MakeAlertsLambdaVersionYft3sA2xzppRLFzFaargSp70YDohPB9C1b03vepFo"
+        "Ref": "MakeAlertsLambdaVersionH2dogoDN40FQw17P8HqmmjbkUCcz8kWXfyvNV2ushU"
       },
       "Export": {
         "Name": "sls-snow-alert-dev-MakeAlertsLambdaFunctionQualifiedArn"

@@ -1,33 +1,30 @@
-const { GoogleSpreadsheet } = require("google-spreadsheet");
-const creds = require("./creds.json");
-const customCreds = require("./customCreds.json");
+const AWS = require("aws-sdk");
+const dynamoSnowAlert = new AWS.DynamoDB.DocumentClient({
+  region: "us-east-1",
+});
 
 module.exports.handler = async (event) => {
   const input = JSON.parse(event.body);
   console.log(event);
   try {
+    const params = {
+      TableName: "SnowAlertDB",
+      Item: {
+        userId: input.userId,
+        name: input.name,
+        number: input.number,
+        zipcode: input.zipcode,
+      },
+    };
     // This Lambda signs users up for weather alets
-    const doc = new GoogleSpreadsheet(customCreds.googleSheetID);
-
-    await doc.useServiceAccountAuth({
-      client_email: creds.client_email,
-      private_key: creds.private_key,
-    }); // loads document properties and worksheets
-    await doc.loadInfo();
-    const firstSheet = doc.sheetsByIndex[0];
-
-    await firstSheet.addRow({
-      name: input.name,
-      number: input.number,
-      zipcode: input.zipcode,
-    });
-    // Return a success message
+    await dynamoSnowAlert.put(params).promise();
+    // return success message
     return {
       statusCode: 200,
-      body: "Row added successfully",
+      body: "Row Added Successfully",
     };
   } catch (error) {
-    // Return an error message
+    // return error message
     return {
       statusCode: 500,
       body: JSON.stringify(error.message),
