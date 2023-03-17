@@ -3,7 +3,6 @@ const dynamoSnowAlert = new AWS.DynamoDB.DocumentClient({
   region: "us-east-1",
 });
 const axios = require("axios");
-const creds = require("./creds.json");
 const customCreds = require("./customCreds.json");
 const client = require("twilio")(
   customCreds.twilioSID,
@@ -30,6 +29,7 @@ const getAllRecipientsFromDB = async () => {
       number: item.number,
       zipcode: item.zipcode,
     }));
+    console.log(recipients);
     return recipients;
   } catch (error) {
     console.error(error);

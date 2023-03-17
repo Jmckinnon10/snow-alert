@@ -16,7 +16,7 @@ module.exports.handler = async (event) => {
         zipcode: input.zipcode,
       },
     };
-    // This Lambda signs users up for weather alets
+    // This Lambda signs users up for weather alerts
     await dynamoSnowAlert.put(params).promise();
     // return success message
     return {

@@ -186,7 +186,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/snow-alert/dev/1678742439799-2023-03-13T21:20:39.799Z/snow-alert.zip"
+          "S3Key": "serverless/snow-alert/dev/1679094131126-2023-03-17T23:02:11.126Z/snow-alert.zip"
         },
         "Handler": "registerForAlerts.handler",
         "Runtime": "nodejs14.x",
@@ -216,7 +216,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/snow-alert/dev/1678742439799-2023-03-13T21:20:39.799Z/snow-alert.zip"
+          "S3Key": "serverless/snow-alert/dev/1679094131126-2023-03-17T23:02:11.126Z/snow-alert.zip"
         },
         "Handler": "makeAlerts.handler",
         "Runtime": "nodejs14.x",
@@ -239,30 +239,30 @@
         "MakeAlertsLogGroup"
       ]
     },
-    "RegisterForAlertsLambdaVersionymRmT631FgZ8pn3SeIDjdjBLtrROZsQJxfeveXQn0": {
+    "RegisterForAlertsLambdaVersionTufddeKqL9oNqBCHJfoywXYFme0STz6vxPgVqStimoQ": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "RegisterForAlertsLambdaFunction"
         },
-        "CodeSha256": "8kQ//bQk4y7YwWUtreeqJ17+npaN+eOLO0lo9wut2uA="
+        "CodeSha256": "NxqNuoEjRmeezJKkq4HQ1yuKsC+7SfnFj+pqOy5njaw="
       }
     },
-    "MakeAlertsLambdaVersionH2dogoDN40FQw17P8HqmmjbkUCcz8kWXfyvNV2ushU": {
+    "MakeAlertsLambdaVersionmloLcA9yTCmBI0qLc2RrhfAOxLosx6PFIyYRG0v7iCo": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "MakeAlertsLambdaFunction"
         },
-        "CodeSha256": "8kQ//bQk4y7YwWUtreeqJ17+npaN+eOLO0lo9wut2uA="
+        "CodeSha256": "NxqNuoEjRmeezJKkq4HQ1yuKsC+7SfnFj+pqOy5njaw="
       }
     },
     "MakeAlertsEventsRuleSchedule1": {
       "Type": "AWS::Events::Rule",
       "Properties": {
-        "ScheduleExpression": "rate(24 hours)",
+        "ScheduleExpression": "cron(0 7 * * ? *)",
         "State": "ENABLED",
         "Targets": [
           {
@@ -423,7 +423,7 @@
     "RegisterForAlertsLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "RegisterForAlertsLambdaVersionymRmT631FgZ8pn3SeIDjdjBLtrROZsQJxfeveXQn0"
+        "Ref": "RegisterForAlertsLambdaVersionTufddeKqL9oNqBCHJfoywXYFme0STz6vxPgVqStimoQ"
       },
       "Export": {
         "Name": "sls-snow-alert-dev-RegisterForAlertsLambdaFunctionQualifiedArn"
@@ -432,7 +432,7 @@
     "MakeAlertsLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "MakeAlertsLambdaVersionH2dogoDN40FQw17P8HqmmjbkUCcz8kWXfyvNV2ushU"
+        "Ref": "MakeAlertsLambdaVersionmloLcA9yTCmBI0qLc2RrhfAOxLosx6PFIyYRG0v7iCo"
       },
       "Export": {
         "Name": "sls-snow-alert-dev-MakeAlertsLambdaFunctionQualifiedArn"

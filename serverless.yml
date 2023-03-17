@@ -29,7 +29,8 @@ functions:
   makeAlerts:
     handler: makeAlerts.handler
     events:
-      - schedule: rate(24 hours)
+      - schedule:
+          rate: cron(0 7 * * ? *)
 
 resources:
   Resources:
