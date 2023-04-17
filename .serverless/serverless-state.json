@@ -210,7 +210,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/snow-alert/dev/1679249252655-2023-03-19T18:07:32.655Z/snow-alert.zip"
+                "S3Key": "serverless/snow-alert/dev/1679765090699-2023-03-25T17:24:50.699Z/snow-alert.zip"
               },
               "Handler": "registerForAlerts.handler",
               "Runtime": "nodejs14.x",
@@ -240,7 +240,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/snow-alert/dev/1679249252655-2023-03-19T18:07:32.655Z/snow-alert.zip"
+                "S3Key": "serverless/snow-alert/dev/1679765090699-2023-03-25T17:24:50.699Z/snow-alert.zip"
               },
               "Handler": "makeAlerts.handler",
               "Runtime": "nodejs14.x",
@@ -286,7 +286,7 @@
           "MakeAlertsEventsRuleSchedule1": {
             "Type": "AWS::Events::Rule",
             "Properties": {
-              "ScheduleExpression": "cron(0 14 * * ? *)",
+              "ScheduleExpression": "cron(0 13 * * ? 0)",
               "State": "ENABLED",
               "Targets": [
                 {
@@ -607,7 +607,7 @@
           {
             "schedule": {
               "rate": [
-                "cron(0 14 * * ? *)"
+                "cron(0 13 * * ? 0)"
               ]
             }
           }
@@ -664,7 +664,7 @@
     "artifact": "/Users/johnmckinnon/snow-alert/.serverless/snow-alert.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/snow-alert/dev/1679249252655-2023-03-19T18:07:32.655Z",
+    "artifactDirectoryName": "serverless/snow-alert/dev/1679765090699-2023-03-25T17:24:50.699Z",
     "artifact": "snow-alert.zip"
   }
 }

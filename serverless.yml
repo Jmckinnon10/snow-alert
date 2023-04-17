@@ -30,7 +30,7 @@ functions:
     handler: makeAlerts.handler
     events:
       - schedule:
-          rate: cron(0 13 * * 0)
+          rate: cron(0 13 * * ? 0)
 
 resources:
   Resources:
@@ -45,3 +45,4 @@ resources:
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: SnowAlertDB
+# Updated cron
