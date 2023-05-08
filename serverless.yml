@@ -45,4 +45,19 @@ resources:
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: SnowAlertDB
-# Updated cron
+
+custom:
+  datadog:
+    site: us5.datadoghq.com
+    flushMetricsToLogs: true
+    apiKey: c92289dc6e1b1a59e6f79f058ad23c16
+    addLayers: true
+    logLevel: "info"
+    enableXrayTracing: false
+    enableDDTracing: true
+    enableDDLogs: true
+    subscribeToAccessLogs: true
+    enableTags: true
+    injectLogContext: true
+plugins:
+  - serverless-plugin-datadog

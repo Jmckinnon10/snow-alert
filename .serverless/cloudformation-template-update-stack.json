@@ -121,7 +121,8 @@
                   "Effect": "Allow",
                   "Action": [
                     "logs:CreateLogStream",
-                    "logs:CreateLogGroup"
+                    "logs:CreateLogGroup",
+                    "logs:TagResource"
                   ],
                   "Resource": [
                     {
@@ -186,16 +187,34 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/snow-alert/dev/1679765090699-2023-03-25T17:24:50.699Z/snow-alert.zip"
+          "S3Key": "serverless/snow-alert/dev/1683576727380-2023-05-08T20:12:07.380Z/snow-alert.zip"
         },
-        "Handler": "registerForAlerts.handler",
+        "Handler": "/opt/nodejs/node_modules/datadog-lambda-js/handler.handler",
         "Runtime": "nodejs14.x",
         "FunctionName": "snow-alert-dev-registerForAlerts",
         "MemorySize": 1024,
         "Timeout": 6,
+        "Tags": [
+          {
+            "Key": "dd_sls_plugin",
+            "Value": "v5.29.0"
+          }
+        ],
         "Environment": {
           "Variables": {
-            "USERS_TABLE": "SnowAlertDB"
+            "USERS_TABLE": "SnowAlertDB",
+            "DD_API_KEY": "c92289dc6e1b1a59e6f79f058ad23c16",
+            "DD_SITE": "us5.datadoghq.com",
+            "DD_LOG_LEVEL": "info",
+            "DD_TRACE_ENABLED": true,
+            "DD_MERGE_XRAY_TRACES": false,
+            "DD_LOGS_INJECTION": true,
+            "DD_SERVERLESS_LOGS_ENABLED": true,
+            "DD_CAPTURE_LAMBDA_PAYLOAD": false,
+            "DD_SERVICE": "snow-alert",
+            "DD_ENV": "dev",
+            "DD_TAGS": "git.commit.sha:b8a2e2084094e230aa640cda9092be29a5e6bfa6,git.repository_url:github.com/Jmckinnon10/snow-alert.git",
+            "DD_LAMBDA_HANDLER": "registerForAlerts.handler"
           }
         },
         "Role": {
@@ -203,7 +222,11 @@
             "IamRoleLambdaExecution",
             "Arn"
           ]
-        }
+        },
+        "Layers": [
+          "arn:aws:lambda:us-east-1:464622532012:layer:Datadog-Node14-x:90",
+          "arn:aws:lambda:us-east-1:464622532012:layer:Datadog-Extension:42"
+        ]
       },
       "DependsOn": [
         "RegisterForAlertsLogGroup"
@@ -216,16 +239,34 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/snow-alert/dev/1679765090699-2023-03-25T17:24:50.699Z/snow-alert.zip"
+          "S3Key": "serverless/snow-alert/dev/1683576727380-2023-05-08T20:12:07.380Z/snow-alert.zip"
         },
-        "Handler": "makeAlerts.handler",
+        "Handler": "/opt/nodejs/node_modules/datadog-lambda-js/handler.handler",
         "Runtime": "nodejs14.x",
         "FunctionName": "snow-alert-dev-makeAlerts",
         "MemorySize": 1024,
         "Timeout": 6,
+        "Tags": [
+          {
+            "Key": "dd_sls_plugin",
+            "Value": "v5.29.0"
+          }
+        ],
         "Environment": {
           "Variables": {
-            "USERS_TABLE": "SnowAlertDB"
+            "USERS_TABLE": "SnowAlertDB",
+            "DD_API_KEY": "c92289dc6e1b1a59e6f79f058ad23c16",
+            "DD_SITE": "us5.datadoghq.com",
+            "DD_LOG_LEVEL": "info",
+            "DD_TRACE_ENABLED": true,
+            "DD_MERGE_XRAY_TRACES": false,
+            "DD_LOGS_INJECTION": true,
+            "DD_SERVERLESS_LOGS_ENABLED": true,
+            "DD_CAPTURE_LAMBDA_PAYLOAD": false,
+            "DD_SERVICE": "snow-alert",
+            "DD_ENV": "dev",
+            "DD_TAGS": "git.commit.sha:b8a2e2084094e230aa640cda9092be29a5e6bfa6,git.repository_url:github.com/Jmckinnon10/snow-alert.git",
+            "DD_LAMBDA_HANDLER": "makeAlerts.handler"
           }
         },
         "Role": {
@@ -233,30 +274,34 @@
             "IamRoleLambdaExecution",
             "Arn"
           ]
-        }
+        },
+        "Layers": [
+          "arn:aws:lambda:us-east-1:464622532012:layer:Datadog-Node14-x:90",
+          "arn:aws:lambda:us-east-1:464622532012:layer:Datadog-Extension:42"
+        ]
       },
       "DependsOn": [
         "MakeAlertsLogGroup"
       ]
     },
-    "RegisterForAlertsLambdaVersionTKr9nmFO8CTE8vGcqIId0kpv33hhNISCniLRtnk": {
+    "RegisterForAlertsLambdaVersionZZq4jtMCFB4TLra7to4j4fITAa9j7PNnYXoKMAyliA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "RegisterForAlertsLambdaFunction"
         },
-        "CodeSha256": "fMO+jQTW827p5ZxgpIpB71DCfzfO9cVfQ8nWJLkVUAc="
+        "CodeSha256": "GcDhhjgzSabDotXxIe9b5EWjZ9oV/Dr/fQkX8Qxl+ac="
       }
     },
-    "MakeAlertsLambdaVersionI7nMaiA8X74wKw4v4EB8QaHsm7fJo9ijGVS6sFP4I": {
+    "MakeAlertsLambdaVersionF7Yr6Jp7BwqKz6fhxP7CK9JsMACFampxsyu1PbmXwpo": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "MakeAlertsLambdaFunction"
         },
-        "CodeSha256": "fMO+jQTW827p5ZxgpIpB71DCfzfO9cVfQ8nWJLkVUAc="
+        "CodeSha256": "GcDhhjgzSabDotXxIe9b5EWjZ9oV/Dr/fQkX8Qxl+ac="
       }
     },
     "MakeAlertsEventsRuleSchedule1": {
@@ -420,10 +465,24 @@
         "Name": "sls-snow-alert-dev-ServerlessDeploymentBucketName"
       }
     },
+    "DatadogMonitorregisterForAlerts": {
+      "Description": "See registerForAlerts in Datadog",
+      "Value": "https://app.us5.datadoghq.com/functions?selection=aws-lambda-functions%2Bsnow-alert-dev-registerforalerts%2Bus-east-1%2B237001296179",
+      "Export": {
+        "Name": "sls-snow-alert-dev-DatadogMonitorregisterForAlerts"
+      }
+    },
+    "DatadogMonitormakeAlerts": {
+      "Description": "See makeAlerts in Datadog",
+      "Value": "https://app.us5.datadoghq.com/functions?selection=aws-lambda-functions%2Bsnow-alert-dev-makealerts%2Bus-east-1%2B237001296179",
+      "Export": {
+        "Name": "sls-snow-alert-dev-DatadogMonitormakeAlerts"
+      }
+    },
     "RegisterForAlertsLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "RegisterForAlertsLambdaVersionTKr9nmFO8CTE8vGcqIId0kpv33hhNISCniLRtnk"
+        "Ref": "RegisterForAlertsLambdaVersionZZq4jtMCFB4TLra7to4j4fITAa9j7PNnYXoKMAyliA"
       },
       "Export": {
         "Name": "sls-snow-alert-dev-RegisterForAlertsLambdaFunctionQualifiedArn"
@@ -432,7 +491,7 @@
     "MakeAlertsLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "MakeAlertsLambdaVersionI7nMaiA8X74wKw4v4EB8QaHsm7fJo9ijGVS6sFP4I"
+        "Ref": "MakeAlertsLambdaVersionF7Yr6Jp7BwqKz6fhxP7CK9JsMACFampxsyu1PbmXwpo"
       },
       "Export": {
         "Name": "sls-snow-alert-dev-MakeAlertsLambdaFunctionQualifiedArn"

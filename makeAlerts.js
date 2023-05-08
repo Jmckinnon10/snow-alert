@@ -108,5 +108,5 @@ const sendWeatherReport = (recipients) => {
 module.exports.handler = async () => {
   const recipientsData = await getAllRecipientsFromDB();
   const weatherData = await getWeather(recipientsData);
-  await sendWeatherReport(weatherData);
+  sendWeatherReport(weatherData);
 };
